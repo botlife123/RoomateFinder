@@ -78,7 +78,7 @@ export default function Matches() {
       position.setValue({ x: gestureState.dx, y: gestureState.dy });
       
       // Show like/pass indicators based on swipe direction
-      const swipeThreshold = screenWidth * 0.2;
+      const swipeThreshold = screenWidth * 0.1;
       if (gestureState.dx > swipeThreshold) {
         // Swiping right - show like indicator
         likeOpacity.setValue(Math.min(gestureState.dx / (screenWidth * 0.3), 1));
@@ -104,7 +104,7 @@ export default function Matches() {
       passOpacity.setValue(0);
       rotate.setValue(0);
       
-      if (Math.abs(gestureState.dx) > screenWidth * 0.3 || Math.abs(gestureState.vx) > 0.5) {
+      if (Math.abs(gestureState.dx) > screenWidth * 0.15 || Math.abs(gestureState.vx) > 0.5) {
         // Swipe away
         const direction = gestureState.dx > 0 ? 1 : -1;
         Animated.parallel([
