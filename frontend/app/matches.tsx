@@ -370,8 +370,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   profileImage: {
-    width: '100%',
-    height: '65%',
+    width: '15%',
+    height: '60%',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
   },
