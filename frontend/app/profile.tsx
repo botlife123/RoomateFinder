@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -35,6 +37,7 @@ export default function Profile() {
   });
 
   const [editingField, setEditingField] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSave = () => {
     Alert.alert('Profile Updated', 'Your profile has been saved successfully!');
@@ -48,6 +51,29 @@ export default function Profile() {
         { text: 'Camera', onPress: () => console.log('Camera') },
         { text: 'Photo Library', onPress: () => console.log('Photo Library') },
         { text: 'Cancel', style: 'cancel' }
+      ]
+    );
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Log Out',
+      'Are you sure you want to log out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Log Out', 
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem('@user_token');
+              router.replace('/login');
+            } catch (err) {
+              console.warn('Logout failed', err);
+              Alert.alert('Logout failed', 'Please try again.');
+            }
+          } 
+        }
       ]
     );
   };
@@ -252,6 +278,12 @@ export default function Profile() {
             <Text style={styles.saveButtonText}>Save Profile</Text>
           </TouchableOpacity>
 
+          {/* Log Out Button */}
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Ionicons name="log-out-outline" size={20} color="#FFFFFF" />
+            <Text style={styles.logoutButtonText}>Log Out</Text>
+          </TouchableOpacity>
+
           {/* Bottom Spacing */}
           <View style={styles.bottomSpacing} />
         </ScrollView>
@@ -429,6 +461,27 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
+    marginLeft: 8,
+  },
+  logoutButton: {
+    backgroundColor: '#EF4444',
+    marginHorizontal: 20,
+    marginTop: 12,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    shadowColor: '#EF4444',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  logoutButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
     marginLeft: 8,
   },
   bottomSpacing: {
