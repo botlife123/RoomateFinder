@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, SafeAreaView, Dimensions, Image } from 'react-n
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
+import {TouchableOpacity} from 'react-native';
+
+
 
 const { width } = Dimensions.get('window');
 
 export default function Home() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  
 
   useEffect(() => {
     (async () => {
