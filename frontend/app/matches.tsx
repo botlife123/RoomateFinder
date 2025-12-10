@@ -66,6 +66,20 @@ export default function Matches() {
   const likeOpacity = useRef(new Animated.Value(0)).current;
   const passOpacity = useRef(new Animated.Value(0)).current;
 
+  const refreshProfiles = () =>{
+
+    setCurrentIndex(0);
+    position.setValue ({
+      x: (position.x as any)._value,
+      y: (position.y as any)._value
+    });
+
+    likeOpacity.setValue(0);
+    passOpacity.setValue(0);
+
+
+  }
+
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
@@ -179,12 +193,12 @@ export default function Matches() {
           </View>
           <Text style={styles.emptyTitle}>No More Profiles!</Text>
           <Text style={styles.emptySubtitle}>Check back later for new potential roommates</Text>
-          <View style={styles.emptyButton}>
-            <Ionicons name="refresh" size={20} color="#6366F1" />
-            <Text style={styles.emptyButtonText}>Refresh</Text>
-          </View>
-        </View>
-      </SafeAreaView>
+          <TouchableOpacity style ={styles.emptyButton} onPress = {refreshProfiles}> 
+            <Ionicons name="refresh" size ={20} color = "#6366F1" />
+            <Text style = {styles.emptyButtonText}> Refresh </Text>
+            </TouchableOpacity> 
+            </View>
+            </SafeAreaView>
     );
   }
 
