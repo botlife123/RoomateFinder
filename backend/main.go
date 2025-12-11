@@ -29,6 +29,9 @@ func main() {
 	router.HandleFunc("/api/health", healthCheckHandler).Methods("GET")
 	router.HandleFunc("/api/users", getUsersHandler).Methods("GET")
 	router.HandleFunc("/api/users", createUserHandler).Methods("POST")
+	router.HandleFunc("/api/messages", sendMessageHandler).Methods("GET")
+	router.HandleFunc("/api/messages", getMessageHandler).Methods("POST")
+
 
 	// CORS configuration
 	c := cors.New(cors.Options{
@@ -106,4 +109,53 @@ func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(payload)
+}
+
+type Message struct {
+
+	Text string `json:"text"`
+	ID string `json:"id"`
+	Sender string `json:"sender"`
+	Timestamp time.Time `json:"timestamp"`
+	isCurrentUser bool `json:"isCurrentUser"`
+}
+
+var messages [] Message
+
+func getMessageHandler(w http.ResponseWriter, r *http. Request){
+
+	respondJSON (w, http.StatusOK, Response {
+
+		Message: "Message recieved successfully.",
+		Data: messages,
+
+	})
+
+
+}
+
+func sendMessageHandler (w http.ResponseWriter, r *http.Request){
+	var message Message
+
+	if err := json.NewDecoder (r.Body).Decode(&message); err != nil {
+
+		respondJSON(w, http.StatusBadRequest, Response {
+
+
+			Message: "Invalid message request.",
+
+		})
+		return 
+	}
+
+	message.ID = time.Now().String()
+	message.Timestamp = time.Now()
+	messages = append(messages, message)
+	respondJSON (w, http.StatusCreated, Response {
+
+		Message: "Message send successfully.",
+		Data: message,
+
+	})
+
 }
