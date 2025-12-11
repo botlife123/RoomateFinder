@@ -76,8 +76,8 @@ export default function Profile() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await AsyncStorage.removeItem('@user_token');
-              router.replace('/login');
+              await AsyncStorage.removeItem('@userToken');
+              router.replace('/home');
             } catch (err) {
               console.warn('Logout failed', err);
               Alert.alert('Logout failed', 'Please try again.');

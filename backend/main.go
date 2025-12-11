@@ -29,8 +29,10 @@ func main() {
 	router.HandleFunc("/api/health", healthCheckHandler).Methods("GET")
 	router.HandleFunc("/api/users", getUsersHandler).Methods("GET")
 	router.HandleFunc("/api/users", createUserHandler).Methods("POST")
-	router.HandleFunc("/api/messages", sendMessageHandler).Methods("GET")
-	router.HandleFunc("/api/messages", getMessageHandler).Methods("POST")
+	router.HandleFunc("/api/messages", getMessageHandler).Methods("GET")
+	router.HandleFunc("/api/messages", sendMessageHandler).Methods("POST")
+
+
 
 
 	// CORS configuration
@@ -157,5 +159,7 @@ func sendMessageHandler (w http.ResponseWriter, r *http.Request){
 		Data: message,
 
 	})
+
+
 
 }
