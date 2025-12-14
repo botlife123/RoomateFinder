@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, PanResponder, Animated, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { createSwipe } from "../src/services/api"
+import { getCurrentUserId } from "../src/services/auth";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -151,13 +153,30 @@ export default function Matches() {
     },
   });
 
-  const handleSwipe = (action: 'like' | 'pass') => {
-    console.log(`${action}: ${profiles[currentIndex]?.name}`);
-    setCurrentIndex(prev => prev + 1);
-    position.setValue({ x: 0, y: 0 });
-    rotate.setValue(0);
-    likeOpacity.setValue(0);
-    passOpacity.setValue(0);
+  const handleSwipe = (action: "like" | "pass") => {
+    const targetProfile = profiles[currentIndex];
+
+    if (targetProfile) {
+      console.log(`${action}: ${targetProfile.name}`);
+
+    if (!currentUserId) {
+      console.log("No user logged in; swipe not saved");
+    } else {
+      createSwipe({
+        swiper_user_id: currentUserId,
+        target_profile_id: targetProfile.id,
+        action,
+      }).catch((err) => {
+        console.log("Failed to save swipe:", err?.message ?? err);
+      });
+    }
+  }
+
+  setCurrentIndex((prev) => prev + 1);
+  position.setValue({ x: 0, y: 0 });
+  rotate.setValue(0);
+  likeOpacity.setValue(0);
+  passOpacity.setValue(0);
   };
 
   const handleButtonPress = (action: 'like' | 'pass') => {
