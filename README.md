@@ -38,12 +38,13 @@ RoomateFinder/
 
 Run the commands from root directory
 
-````bash
+```bash
 copy .env.example .env
 if macOS/Linux: cp .enc.example .env
 
 docker compose up -d
 confirm db running: docker compose ps
+```
 
 ### 2. Start the Backend
 
@@ -53,7 +54,7 @@ Run these commands in the root directory to start the backend
 cd backend
 go mod download
 go run main.go
-````
+```
 
 The backend will start on `http://localhost:8080`
 
